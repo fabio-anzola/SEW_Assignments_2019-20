@@ -2,22 +2,22 @@ package UE08;
 
 /**
  * IP Address class.
- *
  * @author fabioanzola.
  */
 public class IpAddress {
     /**
      * Default LOCALHOST address.
      */
-    final static IpAddress LOCALHOST = new IpAddress();
-    /**
-     * Default MODEM address.
-     */
-    final static IpAddress MODEM = new IpAddress("10.0.0.138");
+    final static IpAddress LOCALHOST = new IpAddress("127.0.0.1");
     /**
      * Attribut.
      */
     private int address;
+
+    /**
+     * Default MODEM address.
+     */
+    final static IpAddress MODEM = new IpAddress("10.0.0.138");
 
     /**
      * Default constructor.
@@ -28,7 +28,6 @@ public class IpAddress {
 
     /**
      * Constructor with given IP.
-     *
      * @param ipaddress int
      */
     public IpAddress(int ipaddress) {
@@ -37,10 +36,9 @@ public class IpAddress {
 
     /**
      * Constructor with given octets.
-     *
-     * @param firstOct  int
+     * @param firstOct int
      * @param secondOct int
-     * @param thirdOct  int
+     * @param thirdOct int
      * @param fourthOct int
      */
     public IpAddress(int firstOct, int secondOct, int thirdOct, int fourthOct) {
@@ -49,7 +47,6 @@ public class IpAddress {
 
     /**
      * Constructor with given IP (array).
-     *
      * @param ipaddress int[]
      */
     public IpAddress(int[] ipaddress) {
@@ -58,7 +55,6 @@ public class IpAddress {
 
     /**
      * Construcor with IP address given as String.
-     *
      * @param ipaddress String
      */
     public IpAddress(String ipaddress) {
@@ -67,51 +63,41 @@ public class IpAddress {
 
     /**
      * Sets attribute through String.
-     *
      * @param ip String
      */
     public void set(String ip) {
-        isValidIp(toIntArray(to32BitIp(ip))[0], toIntArray(to32BitIp(ip))[1],
-                toIntArray(to32BitIp(ip))[2], toIntArray(to32BitIp(ip))[3]);
         address = to32BitIp(ip);
     }
 
     /**
      * Sets attribute through int.
-     *
      * @param ip int
      */
     public void set(int ip) {
-        isValidIp(toIntArray(ip)[0], toIntArray(ip)[1], toIntArray(ip)[2], toIntArray(ip)[3]);
         address = ip;
     }
 
     /**
      * Sets attribute through String int of octets.
-     *
      * @param o3 int
      * @param o2 int
      * @param o1 int
      * @param o0 int
      */
     public void set(int o3, int o2, int o1, int o0) {
-        isValidIp(o3, o2, o1, o0);
         address = to32BitIp(new int[]{o3, o2, o1, o0});
     }
 
     /**
      * Sets attribute through int[].
-     *
      * @param ip int[]
      */
     public void set(int[] ip) {
-        isValidIp(ip[0], ip[1], ip[2], ip[3]);
         address = to32BitIp(ip);
     }
 
     /**
      * Gets address as int.
-     *
      * @return int
      */
     public int getAsInt() {
@@ -120,7 +106,6 @@ public class IpAddress {
 
     /**
      * Gets octet.
-     *
      * @param num int
      * @return int
      */
@@ -130,7 +115,6 @@ public class IpAddress {
 
     /**
      * Gets address as array.
-     *
      * @return int[]
      */
     public int[] getAsArray() {
@@ -139,7 +123,6 @@ public class IpAddress {
 
     /**
      * To String method.
-     *
      * @return String
      */
     @Override
@@ -157,7 +140,6 @@ public class IpAddress {
 
     /**
      * Equals method.
-     *
      * @param o Object
      * @return boolean
      */
@@ -171,28 +153,38 @@ public class IpAddress {
 
     /**
      * Converts String IP to int.
-     *
      * @param ip String
      * @return int
      */
     private int to32BitIp(String ip) {
         int ipBit = 0;
         String[] ipOctets = ip.split("[.]");
+        if (ipOctets.length != 4) {
+            throw new IllegalArgumentException("Check your octets");
+        }
         for (int i = 0; i < ipOctets.length; i++) {
             ipBit = (ipBit << 8) | Integer.parseInt(ipOctets[i]);
+        }
+        int[] checker = toIntArray(ipBit);
+        for (int i = 0; i < checker.length; i++) {
+            if (checker[i] < 0 || checker[i] > 255) {
+                throw new IllegalArgumentException("Check your octets");
+            }
         }
         return ipBit;
     }
 
     /**
      * Converts int[] address to int.
-     *
      * @param ip int[]
      * @return int
      */
     private int to32BitIp(int[] ip) {
         int ipBit = 0;
         for (int i = 0; i < ip.length; i++) {
+            if (ip[i] < 0 || ip[i] > 255) {
+                throw new IllegalArgumentException("Check your octets");
+            }
             ipBit = (ipBit << 8) | ip[i];
         }
         return ipBit;
@@ -200,7 +192,6 @@ public class IpAddress {
 
     /**
      * Converts int IP to array.
-     *
      * @param ip int
      * @return int[]
      */
@@ -217,13 +208,19 @@ public class IpAddress {
 
     /**
      * Checks if array is passed numbers are valid.
-     *
-     * @param firstOct  int
+     * @param firstOct int
      * @param secondOct int
-     * @param thirdOct  int
+     * @param thirdOct int
      * @param fourthOct int
      */
     private void isValidIp(int firstOct, int secondOct, int thirdOct, int fourthOct) {
+        if (firstOct == 0) {
+            throw new IllegalArgumentException("Check your octets");
+        }
+        System.out.println(firstOct);
+        System.out.println(secondOct);
+        System.out.println(thirdOct);
+        System.out.println(fourthOct);
         if (firstOct > 255 || secondOct > 255 || thirdOct > 255 || fourthOct > 255 || firstOct < 0
                 || secondOct < 0 || thirdOct < 0 || fourthOct < 0) {
             throw new IllegalArgumentException("Check your octets");

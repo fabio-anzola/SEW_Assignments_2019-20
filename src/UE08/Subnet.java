@@ -2,35 +2,46 @@ package UE08;
 
 /**
  * Subnet class.
- *
  * @author fabioanzola.
  */
 public class Subnet {
     /**
-     * Default LOCALNET address.
-     */
-    final static Subnet LOCALNET = new Subnet(new IpAddress("127.0.0.0"), 8);
-    /**
-     * Default PRIVATENET10 address.
-     */
-    final static Subnet PRIVATENET10 = new Subnet(new IpAddress("10.0.0.0"), 8);
-    /**
      * Attribut.
      */
     private IpAddress addr;
+
     /**
      * Attribut.
      */
     private IpAddress mask;
 
     /**
+     * Default LOCALNET address.
+     */
+    public final static Subnet LOCALNET = new Subnet(new IpAddress("127.0.0.0"), 8);
+
+    /**
+     * Default PRIVATENET10 address.
+     */
+    public final static Subnet PRIVATENET10 = new Subnet(new IpAddress("10.0.0.0"), 8);
+
+    /**
      * Constructor with String.
-     *
      * @param address String
      */
     public Subnet(String address) {
         String[] splitted = address.split("/");
-        if (splitted[1].length() == 2) {
+        if (splitted.length != 2) {
+            throw new IllegalArgumentException("Check your octets");
+        }
+        if (splitted[1].length() <= 2) {
+            if (Integer.parseInt(splitted[1]) > 32 || Integer.parseInt(splitted[1]) < 0) {
+                throw new IllegalArgumentException("Check your octets");
+            }
+            this.addr = new IpAddress(splitted[0]);
+            if ((this.addr.getAsInt() << Integer.parseInt(splitted[1])) != 0) {
+                throw new IllegalArgumentException("Check your octets");
+            }
             this.mask = new IpAddress(getNetmask(Integer.parseInt(splitted[1])));
         } else {
             this.mask = new IpAddress(splitted[1]);
@@ -40,26 +51,18 @@ public class Subnet {
 
     /**
      * Constructor with IpAddress, int.
-     *
      * @param ipaddr IpAddress
-     * @param cidr   int
+     * @param cidr int
      */
     public Subnet(IpAddress ipaddr, int cidr) {
-        String address = ipaddr + "/" + cidr;
-        String[] splitted = address.split("/");
-        if (splitted[1].length() == 2) {
-            this.mask = new IpAddress(getNetmask(Integer.parseInt(splitted[1])));
-        } else {
-            this.mask = new IpAddress(splitted[1]);
-        }
-        this.addr = new IpAddress(splitted[0]);
+        this.addr = ipaddr;
+        this.mask = new IpAddress(getNetmask(cidr));
     }
 
     /**
      * Constructor with IpAddress, IpAddress.
-     *
      * @param ipaddr IpAddress
-     * @param mask   IpAddress
+     * @param mask IpAddress
      */
     public Subnet(IpAddress ipaddr, IpAddress mask) {
         this.addr = ipaddr;
@@ -68,9 +71,8 @@ public class Subnet {
 
     /**
      * Constructor with String, String.
-     *
      * @param ipaddr String
-     * @param mask   String
+     * @param mask String
      */
     public Subnet(String ipaddr, String mask) {
         this.addr = new IpAddress(ipaddr);
@@ -79,7 +81,6 @@ public class Subnet {
 
     /**
      * Constructor with IpAddress.
-     *
      * @param ipaddr IpAddress
      */
     public Subnet(IpAddress ipaddr) {
@@ -99,7 +100,6 @@ public class Subnet {
 
     /**
      * Gets Netmask.
-     *
      * @return IpAddress
      */
     public IpAddress getNetMask() {
@@ -108,7 +108,6 @@ public class Subnet {
 
     /**
      * Gets Netaddress.
-     *
      * @return IpAddress
      */
     public IpAddress getNetAddress() {
@@ -117,7 +116,6 @@ public class Subnet {
 
     /**
      * Gets Netmask as CIDR.
-     *
      * @return int
      */
     public int getCidr() {
@@ -133,7 +131,6 @@ public class Subnet {
 
     /**
      * Gets number of hosts in range.
-     *
      * @return int
      */
     public int getNumberOfHosts() {
@@ -142,7 +139,6 @@ public class Subnet {
 
     /**
      * Checks if equal.
-     *
      * @param o Object
      * @return boolean
      */
@@ -157,7 +153,6 @@ public class Subnet {
 
     /**
      * Formats to String.
-     *
      * @return String
      */
     @Override
@@ -167,7 +162,6 @@ public class Subnet {
 
     /**
      * Checks if ip is inside of range.
-     *
      * @param ip IpAddress
      * @return boolean
      */
@@ -180,7 +174,6 @@ public class Subnet {
 
     /**
      * Gets Brodcast Ip.
-     *
      * @return IpAddress
      */
     public IpAddress getBroadcastAddress() {
@@ -189,7 +182,6 @@ public class Subnet {
 
     /**
      * Gets first Ip in range.
-     *
      * @return IpAddress
      */
     public IpAddress getFirstIp() {
@@ -198,7 +190,6 @@ public class Subnet {
 
     /**
      * Gets last Ip in range.
-     *
      * @return IpAddress
      */
     public IpAddress getLastIp() {
@@ -207,7 +198,6 @@ public class Subnet {
 
     /**
      * Gets all ips in range.
-     *
      * @return IpAddress[]
      */
     public IpAddress[] getAllIpsInNetwork() {
@@ -225,7 +215,6 @@ public class Subnet {
 
     /**
      * Gets next Subnet.
-     *
      * @return Subnet
      */
     public Subnet getNextSubnet() {
@@ -236,7 +225,6 @@ public class Subnet {
 
     /**
      * Splits the Network.
-     *
      * @param n int
      * @return Subnet[]
      */
@@ -246,7 +234,6 @@ public class Subnet {
 
     /**
      * Gets Netmask.
-     *
      * @param suffix int
      * @return int
      */
@@ -257,7 +244,6 @@ public class Subnet {
 
     /**
      * Gets Netmask.
-     *
      * @return int
      */
     private int getNetmask() {
@@ -267,8 +253,7 @@ public class Subnet {
 
     /**
      * Gets network ip.
-     *
-     * @param ip     int
+     * @param ip int
      * @param suffix int
      * @return int
      */
@@ -279,7 +264,6 @@ public class Subnet {
 
     /**
      * Converts to 32pit int.
-     *
      * @param ip String
      * @return int
      */
