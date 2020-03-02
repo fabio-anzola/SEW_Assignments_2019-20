@@ -1,0 +1,67 @@
+
+
+import java.io.BufferedReader
+import java.
+import java.io.IOException;
+import j
+im
+
+
+
+
+
+public class DiverseMethoden {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

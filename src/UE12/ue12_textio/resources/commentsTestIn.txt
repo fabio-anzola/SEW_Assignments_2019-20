@@ -1,0 +1,67 @@
+/*package anzola.ue12_textio;*/
+
+import java.io.BufferedReader//;
+import java.//io.BufferedWriter;
+import java.io.IOException;
+import j//ava.nio.charset.Charset;
+im//port java.nio.file.Files;
+//import java.nio.file.Paths;
+
+/**
+ * @author fabioanzola
+ */
+public class DiverseMethoden {
+    /**
+     * Converts text within a file to uppercase
+     * @param srcFile String
+     * @param destFile String
+     * @throws IOException if an error occurs
+     */
+
+    /**
+     * Converts text within a file to lowercase
+     * @param srcFile String
+     * @param destFile String
+     * @throws IOException if an error occurs
+     */
+
+    /**
+     * Compares the text within two files
+     * @param srcFile1 String
+     * @param srcFile2 String
+     * @return boolean
+     * @throws IOException if an error occurs
+     */
+
+    /**
+     * Encrypts a file and then writes it into a different file
+     * @param srcFile String
+     * @param destFile String
+     * @throws IOException if an error occurs
+     */
+
+    /**
+     * Decrypts a previously encrypted file and then writes it into a different file
+     * @param srcFile String
+     * @param destFile String
+     * @throws IOException if an error occurs
+     */
+
+    /**
+     * Creates a text-statistic
+     * @param srcFile String
+     * @param statisticString String
+     * @throws IOException if an error occurs
+     */
+
+    /*
+    public static void main(String[] args) throws IOException {
+        convertFileToUpperCase("resources/testFile1.txt", "resources/outTest.txt");
+        convertFileToLowerCase("resources/testFile1.txt", "resources/outTest.txt");
+        //System.out.println(compareFiles("resources/empty.txt", "resources/bad.txt"));
+        encryptFile("resources/testFile1.txt", "resources/outTest.txt");
+        decryptFile("resources/outTest.txt", "resources/outTest2.txt");
+        countChar("resources/simple.txt", "resources/outTest3.txt");
+    }
+     */
+}

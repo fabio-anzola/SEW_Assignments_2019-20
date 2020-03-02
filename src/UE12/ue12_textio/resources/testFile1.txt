@@ -1,0 +1,58 @@
+package anzola.ue12_textio;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+public class DiverseMethoden {
+
+    void convertFileToUpperCase(String srcFile, String destFile) throws IOException {
+        try (
+                BufferedReader in = Files.newBufferedReader(Paths.get(srcFile), Charset.forName("UTF-8"));
+                BufferedWriter out = Files.newBufferedWriter(Paths.get(destFile), Charset.forName("UTF-8"));
+
+        ) {
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                out.write(line.toUpperCase());
+            }
+        }
+    }
+
+    void convertFileToLowerCase (String srcFile, String destFile) throws  IOException {
+        try (
+                BufferedReader in = Files.newBufferedReader(Paths.get(srcFile), Charset.forName("UTF-8"));
+                BufferedWriter out = Files.newBufferedWriter(Paths.get(destFile), Charset.forName("UTF-8"));
+
+        ) {
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                out.write(line.toLowerCase());
+            }
+        }
+    }
+
+    boolean compareFiles (String srcFile1, String srcFile2) throws IOException {
+        try (
+                BufferedReader inOne = Files.newBufferedReader(Paths.get(srcFile1), Charset.forName("UTF-8"));
+                BufferedReader inTwo = Files.newBufferedReader(Paths.get(srcFile2), Charset.forName("UTF-8"));
+
+
+        ) {
+            String line1;
+            String line2;
+            int flag = 1;
+            while ((flag == 1) && ((line1 = inOne.readLine()) != null) && ((line2 = inTwo.readLine()) != null)) {
+                if (!line1.equalsIgnoreCase(line2)) {
+                    flag = 0;
+                }
+            }
+        }
+    }
+}
