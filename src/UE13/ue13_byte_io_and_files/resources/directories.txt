@@ -1,0 +1,11 @@
+# comment
+ordner1:
+  datei1_1
+  datei1_2
+  ordner11:
+    datei11_1
+    datei11_2
+  ordner12:
+    datei12_1
+     ordner123:
+      datei123

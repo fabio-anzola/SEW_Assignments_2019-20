@@ -1,14 +1,24 @@
-package UE13.ue13_byte_io_and_files;
+package anzola.ue13_byte_io_and_files;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
 public class TestByteIO {
+
+    public static void main(String[] args) throws IOException {
+        //encryptFile(Paths.get("resources/abcTest.txt"), Paths.get("resources/abcTestEnc.txt"), 33);
+        //fileSplit(Paths.get("resources/mein-Bild.png"), 1024);
+        //fileUnsplit(Paths.get("resources/mein-Bild.png"));
+        //createFilesAndDirectories(Paths.get("resources/directories.txt"));
+        createFilesAndDirectoriesExtended(Paths.get("resources/directories.txt"));
+    }
 
     /**
      * Inverts a given file
@@ -203,6 +213,79 @@ public class TestByteIO {
                     }
                 } else {
                     break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates Files and Folders from a TextFile
+     *
+     * @param file The directory.txt file as a Path
+     * @throws IOException If an error occurs
+     */
+    public static void createFilesAndDirectories(Path file) throws IOException {
+        try (
+                BufferedReader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)
+
+        ) {
+            String line;
+            String newLine;
+            String prevFolder = "";
+            while ((line = in.readLine()) != null) {
+                if (!line.startsWith("#")) {
+                    newLine = line.replace(" ", "").replace(":", "");
+                    if (line.charAt(line.length() - 1) == ':') {
+                        Files.createDirectory(Paths.get(newLine));
+                        prevFolder = newLine;
+                    } else {
+                        if (!prevFolder.equals("")) {
+                            Files.createFile(Paths.get(prevFolder + '/' + newLine));
+                        } else {
+                            Files.createFile(Paths.get(newLine));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates Files and Folders from a TextFile (extended version)
+     *
+     * @param file The directory.txt file as a Path
+     * @throws IOException If an error occurs
+     */
+    public static void createFilesAndDirectoriesExtended(Path file) throws IOException {
+        try (
+                BufferedReader in = Files.newBufferedReader(file)
+
+        ) {
+            String line;
+            String newLine;
+            String path = "";
+            int parentTab = 0;
+            int tab = 0;
+            while ((line = in.readLine()) != null) {
+                if (!line.startsWith("#")) {
+                    newLine = line.replace(" ", "").replace(":", "");
+                    tab = line.length() - line.replaceAll(" ", "").length();
+                    if (parentTab > tab) {
+                        String[] pathArray = path.split("/");
+                        int lessParents = pathArray.length - (parentTab - tab) / 2;
+                        StringBuilder tempPath = new StringBuilder();
+                        for (int i = 0; i < lessParents; i++) {
+                            tempPath.append(pathArray[i]).append("/");
+                        }
+                        path = tempPath.toString();
+                    }
+                    if (line.charAt(line.length() - 1) == ':') {
+                        Files.createDirectory(Paths.get(path + newLine));
+                        path += newLine + '/';
+                    } else {
+                        Files.createFile(Paths.get(path + newLine));
+                    }
+                    parentTab = tab;
                 }
             }
         }
